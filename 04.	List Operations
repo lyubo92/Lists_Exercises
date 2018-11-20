@@ -1,0 +1,52 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class listOperations {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        List<Integer> numbers = Arrays.stream(input.nextLine().split("\\s+")).map(Integer::parseInt).collect(Collectors.toList());;
+        String line = input.nextLine();
+
+        while (!line.equals("End")){
+            String[] tokens = line.split("\\s+");
+            String command = tokens[0];
+            if (command.equals("Add")){
+                int num = Integer.parseInt(tokens[1]);
+                numbers.add(num);
+            }else if (command.equals("Insert")){
+                int num = Integer.parseInt(tokens[1]);
+                int index = Integer.parseInt(tokens[2]);
+                if (index <= numbers.size() - 1 && index >= 0){
+                    numbers.add(index, num);
+                }else{
+                    System.out.println("Invalid index");
+                }
+            }else if (command.equals("Remove")){
+                int index = Integer.parseInt(tokens[1]);
+                if (index <= numbers.size() - 1 && index >= 0){
+                    numbers.remove(index);
+                }else{
+                    System.out.println("Invalid index");
+                }
+            }else if (command.equals("Shift")){
+                String direction = tokens[1];
+                int count = Integer.parseInt(tokens[2]);
+                if (direction.equals("left")){
+                    for (int i = 0; i < count; i++) {
+                        numbers.add(numbers.get(0));
+                        numbers.remove(0);
+                    }
+                }else{
+                    for (int i = 0; i < count; i++) {
+                        numbers.add(0, numbers.get(numbers.size() - 1));
+                        numbers.remove(numbers.size() - 1);
+                    }
+                }
+            }
+            line = input.nextLine();
+        }
+        numbers.forEach(e -> System.out.print(e + " "));
+    }
+}
